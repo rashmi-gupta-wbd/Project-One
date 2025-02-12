@@ -15,7 +15,7 @@ jobs:
 
     strategy:
       matrix:
-        os: [ubuntu-latest, windows-latest, macos-latest]
+        os: [ubuntu-latest, macos-latest]
 
     steps:
       # Checkout the code from the repository
@@ -27,11 +27,5 @@ jobs:
         run: |
           echo "this string is printed on deployment"
         shell: bash # By default, bash works across Linux and macOS
-        if: runner.os != 'Windows' # This ensures Windows uses PowerShell, but you can also use bash if preferred.
         
-      # Windows specific step to use PowerShell for printing message
-      - name: Print deployment message on Windows
-        run: |
-          Write-Host "this string is printed on deployment"
-        shell: pwsh
-        if: runner.os == 'Windows'
+      
