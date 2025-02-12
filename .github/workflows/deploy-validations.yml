@@ -2,6 +2,10 @@ name: Print Message on Deployment
 
 # Trigger on deployment
 on:
+  push:
+    branches:
+      - main  # Make sure your push is going to `main`
+
   deployment_status:
     types: [success]
 
