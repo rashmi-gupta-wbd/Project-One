@@ -32,8 +32,8 @@ workflow_dispatch:
         required : true
 
   #we are commenting out deployment_sattus to see more about its function. 
-  #deployment_status:
-    #types: [success]
+  deployment_status:
+    types: [success]
 
 jobs:
   print-message:
