@@ -1,5 +1,5 @@
-name: Workflow with inputs 
-run-name: Deploy ${{ inputs.deploy_job }} from ${{ inputs.project }}
+name: Post Deployment Check Validation
+run-name: Validate ${{ inputs.deploy_job }} from ${{ inputs.project }}
 
 # Trigger on deployment
 # on:
@@ -10,7 +10,7 @@ run-name: Deploy ${{ inputs.deploy_job }} from ${{ inputs.project }}
 #we want to trigger the event after the deploy-validations workflow is done processing 
 on:
   workflow_run:
-    workflows: ["Trigger Workflow"]
+    workflows: ["deploy-workflow"]
     types:
       - completed
   
