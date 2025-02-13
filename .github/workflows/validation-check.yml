@@ -6,7 +6,7 @@ on:
     branches:
       - main  # Make sure your push is going to `main`
 
-workflow_dispatch:
+  workflow_dispatch:
     inputs:
       environment:
         description: environment
