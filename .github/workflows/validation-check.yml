@@ -1,0 +1,57 @@
+name: Workflow with inputs 
+run-name: Deploy ${{ inputs.deploy_job }} from ${{ inputs.project }}
+# Trigger on deployment
+on:
+  push:
+    branches:
+      - main  # Make sure your push is going to `main`
+
+workflow_dispatch:
+    inputs:
+      environment:
+        description: environment
+        default: env1
+        required: true
+        type: choice
+        options:
+          - env1
+          - env2
+          - env3
+          - env4
+          - env5
+          - env6
+          - env7
+          - env8
+          - env9
+          - env10
+      project:
+        description: the “___” project directory containing the job
+        required: true
+      deploy_job:
+        description: job name
+        required : true
+
+  #we are commenting out deployment_sattus to see more about its function. 
+  #deployment_status:
+    #types: [success]
+
+jobs:
+  print-message:
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      matrix:
+        os: [macos-latest]
+
+    steps:
+      # Checkout the code from the repository
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      # Print the message
+      - name: Print deployment message
+        run: |
+          echo "this string is printed on deployment"
+        shell: bash # By default, bash works across Linux and macOS
+        
+      
