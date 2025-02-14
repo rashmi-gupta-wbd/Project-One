@@ -10,9 +10,9 @@ on:
   # push:
   #   branches:
   #     - main  # Make sure your push is going to `main`
-  push:
-    branches:
-      - '*'  # Make sure your push is going to `main`
+  #push:
+   # branches:
+     # - '*'  # Make sure your push is going to `main`
 
  #we want the options to be given to the user, while he wants to run the workflow
   workflow_dispatch:
