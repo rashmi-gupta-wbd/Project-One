@@ -10,9 +10,13 @@ on:
   # push:
   #   branches:
   #     - main  # Make sure your push is going to `main`
+
+  #after writing the below code and runnning it, we then commeneted it
+  #before commenting we were getting the workflow being run for all the pushes to all the branches
+  #next we commented out, so for all the branches that are newly created afterthis, we are getting the workflow for all of them
   #push:
    # branches:
-     # - '*'  # Make sure your push is going to `main`
+     # - '*'  
 
  #we want the options to be given to the user, while he wants to run the workflow
   workflow_dispatch:
@@ -45,18 +49,34 @@ on:
     types: [success]
 
 jobs:
-  print-message:
-    runs-on: ${{ matrix.os }}
 
-    strategy:
-      matrix:
-        os: [macos-latest]
-
+  deploy:
+    runs-on: macos-latest
     steps:
       # Checkout the code from the repository
       - name: Checkout code
         uses: actions/checkout@v3
-
+      - name: Deploy
+        run: |
+          echo "Deploying the job: ${{ inputs.deploy_job }} from project: ${{ inputs.project }}"
+      # Set outputs for the deploy_job and project
+      - name: Set Outputs
+        id: set_outputs
+        run: |
+          echo "deploy_job=${{ inputs.deploy_job }}" >> $GITHUB_ENV
+          echo "project=${{ inputs.project }}" >> $GITHUB_ENV
+          echo "::set-output name=deploy_job::${{ inputs.deploy_job }}"
+          echo "::set-output name=project::${{ inputs.project }}"
+          
+  print-message:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [macos-latest]
+    steps:
+      # Checkout the code from the repository
+      - name: Checkout code
+        uses: actions/checkout@v3
       # Print the message
       - name: Print deployment message
         run: |
