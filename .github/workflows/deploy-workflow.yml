@@ -49,38 +49,56 @@ on:
     types: [success]
 
 jobs:
-
   deploy:
     runs-on: macos-latest
+
     steps:
       # Checkout the code from the repository
       - name: Checkout code
         uses: actions/checkout@v3
-      - name: Deploy
+
+      - name: Print deployment message
         run: |
-          echo "Deploying the job: ${{ inputs.deploy_job }} from project: ${{ inputs.project }}"
+          echo "Deploying job: ${{ inputs.deploy_job }} from project: ${{ inputs.project }}"
+
       # Set outputs for the deploy_job and project
       - name: Set Outputs
         id: set_outputs
         run: |
-          echo "deploy_job=${{ inputs.deploy_job }}" >> $GITHUB_ENV
-          echo "project=${{ inputs.project }}" >> $GITHUB_ENV
           echo "::set-output name=deploy_job::${{ inputs.deploy_job }}"
           echo "::set-output name=project::${{ inputs.project }}"
+  # printing message and deploy acn be kept under the same job
+  # deploy:
+  #   runs-on: macos-latest
+  #   steps:
+  #     # Checkout the code from the repository
+  #     - name: Checkout code
+  #       uses: actions/checkout@v3
+  #     - name: Deploy
+  #       run: |
+  #         echo "Deploying the job: ${{ inputs.deploy_job }} from project: ${{ inputs.project }}"
+  #     # Set outputs for the deploy_job and project
+  #     - name: Set Outputs
+  #       id: set_outputs
+  #       run: |
+  #         echo "deploy_job=${{ inputs.deploy_job }}" >> $GITHUB_ENV
+  #         echo "project=${{ inputs.project }}" >> $GITHUB_ENV
+  #         echo "::set-output name=deploy_job::${{ inputs.deploy_job }}"
+  #         echo "::set-output name=project::${{ inputs.project }}"
           
-  print-message:
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        os: [macos-latest]
-    steps:
-      # Checkout the code from the repository
-      - name: Checkout code
-        uses: actions/checkout@v3
-      # Print the message
-      - name: Print deployment message
-        run: |
-          echo "this string is printed on deployment"
-        shell: bash # By default, bash works across Linux and macOS
+  # print-message:
+  #   runs-on: ${{ matrix.os }}
+  #   strategy:
+  #     matrix:
+  #       os: [macos-latest]
+  #   steps:
+  #     # Checkout the code from the repository
+  #     - name: Checkout code
+  #       uses: actions/checkout@v3
+  #     # Print the message
+  #     - name: Print deployment message
+  #       run: |
+  #         echo "this string is printed on deployment"
+  #       shell: bash # By default, bash works across Linux and macOS
         
       
