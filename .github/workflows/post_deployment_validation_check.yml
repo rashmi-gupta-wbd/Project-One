@@ -48,22 +48,47 @@ on:
     types: [success]
 
 jobs:
-  print-message:
-    runs-on: ${{ matrix.os }}
-
-    strategy:
-      matrix:
-        os: [macos-latest]
+  post-deploy-validation:
+    runs-on: macos-latest
 
     steps:
-      # Checkout the code from the repository
+      # Checkout code from the repository
       - name: Checkout code
         uses: actions/checkout@v3
 
-      # Print the message
-      - name: Print deployment message
+      # Extract the necessary outputs from the deploy workflow
+      - name: Get deploy job and project from deploy workflow
+        id: get_outputs
         run: |
-          echo "this string is printed on deployment"
-        shell: bash # By default, bash works across Linux and macOS
+          echo "Deploy Job: ${{ github.event.workflow_run.output.deploy_job }}"
+          echo "Project: ${{ github.event.workflow_run.output.project }}"
+          echo "deploy_job=${{ github.event.workflow_run.output.deploy_job }}" >> $GITHUB_ENV
+          echo "project=${{ github.event.workflow_run.output.project }}" >> $GITHUB_ENV
+
+      # Validate the deployment with the extracted values
+      - name: Post-deployment validation message
+        run: |
+          echo "Validating deployment of job: ${{ env.deploy_job }} from project: ${{ env.project }}"
+        shell: bash
+
+#we need our job to do more than print message. 
+# jobs:
+#   print-message:
+#     runs-on: ${{ matrix.os }}
+
+#     strategy:
+#       matrix:
+#         os: [macos-latest]
+
+#     steps:
+#       # Checkout the code from the repository
+#       - name: Checkout code
+#         uses: actions/checkout@v3
+
+#       # Print the message
+#       - name: Print deployment message
+#         run: |
+#           echo "this string is printed on deployment"
+#         shell: bash # By default, bash works across Linux and macOS
         
       
