@@ -2,8 +2,8 @@ name: Post Deployment Check Validation
 
 # since we want the dynamic name, we are commenting out the first name format and writing the second 
 # run-name: Validate ${{ inputs.deploy_job }} from ${{ inputs.project }}
-run-name: ${{ needs.deploy.outputs.deploy_job }} from ${{ needs.deploy.outputs.project }}
-
+# run-name: Validate ${{ needs.deploy.outputs.deploy_job }} from ${{ needs.deploy.outputs.project }} #didnt work, needs not there 
+run-name: Validate Workflow for ${{ github.event.workflow_run.head_commit.message }}
 # Trigger on deployment
 # on:
 #   push:
@@ -48,7 +48,7 @@ on:
     types: [success]
 
 jobs:
-  post-deploy-validation:
+  validate:
     runs-on: macos-latest
 
     steps:
@@ -56,19 +56,36 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      # Extract the necessary outputs from the deploy workflow
-      - name: Get deploy job and project from deploy workflow
-        id: get_outputs
-        run: |
-          echo "Deploy Job: ${{ github.event.workflow_run.output.deploy_job }}"
-          echo "Project: ${{ github.event.workflow_run.output.project }}"
-          echo "deploy_job=${{ github.event.workflow_run.output.deploy_job }}" >> $GITHUB_ENV
-          echo "project=${{ github.event.workflow_run.output.project }}" >> $GITHUB_ENV
+      # Get the workflow run ID and use the GitHub API to fetch the outputs
+      - name: Fetch outputs from deploy workflow
+        id: fetch_outputs
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const runId = ${{ github.event.workflow_run.id }};
+            const owner = context.repo.owner;
+            const repo = context.repo.repo;
 
-      # Validate the deployment with the extracted values
+            // Fetch the workflow run data from GitHub API
+            const workflowRun = await github.rest.actions.getWorkflowRun({
+              owner,
+              repo,
+              run_id: runId
+            });
+
+            // Extract outputs from the previous workflow
+            const deployJob = workflowRun.data.outputs.deploy_job;
+            const project = workflowRun.data.outputs.project;
+
+            // Set these values as environment variables
+            core.exportVariable('DEPLOY_JOB', deployJob);
+            core.exportVariable('PROJECT', project);
+            return { deployJob, project };
+
+      # Print the validation message using the fetched outputs
       - name: Post-deployment validation message
         run: |
-          echo "Validating deployment of job: ${{ env.deploy_job }} from project: ${{ env.project }}"
+          echo "Validating deployment of job: ${{ env.DEPLOY_JOB }} from project: ${{ env.PROJECT }}"
         shell: bash
 
 #we need our job to do more than print message. 
