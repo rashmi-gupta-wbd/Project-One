@@ -10,7 +10,7 @@ run-name: Validate ${{ inputs.deploy_job }} from ${{ inputs.project }}
 #we want to trigger the event after the deploy-validations workflow is done processing 
 on:
   workflow_run:
-    workflows: ["deploy-workflow"]
+    workflows: ["Deploy workflow"]
     types:
       - completed
   
