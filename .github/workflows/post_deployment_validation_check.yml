@@ -1,5 +1,8 @@
 name: Post Deployment Check Validation
-run-name: Validate ${{ inputs.deploy_job }} from ${{ inputs.project }}
+
+# since we want the dynamic name, we are commenting out the first name format and writing the second 
+# run-name: Validate ${{ inputs.deploy_job }} from ${{ inputs.project }}
+run-name: ${{ needs.deploy.outputs.deploy_job }} from ${{ needs.deploy.outputs.project }}
 
 # Trigger on deployment
 # on:
