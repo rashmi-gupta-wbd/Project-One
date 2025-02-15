@@ -7,7 +7,9 @@
 7. Next, we wanted completion of one workflow triggering the other workflow's start, which we achieved by correctly copying the "name" of the deployment_workflow in the second workflow ✅
 8. The dynamic name in the second workflow should take the imput of its name from the first workflow. 😕 
 this is bit tricky as setting some values we need form the first workflow, and then on usig it as a input for the second workflow, we are getting some error, as it is unable to detect the outputs generated from the first.
-9. Next we wanted to take separate inputs for the two workflows ❌ this is not possible in github actions simply. the doc suggests that we can just take the inputs for thesecond while triggering the first job itself, which we are having some problem with lately... but this could be ONE OF THE IDEAS 
-#to take the inputs of the validations checks at the start itself
+9. Next we wanted to take separate inputs for the two workflows ❌ this is not possible in github actions simply.
+10. The doc suggests that we can just take the inputs for the second while triggering the first job itself, which we are having some problem with lately... but this could be ONE OF THE IDEAS (to take the inputs of the validations checks at the start itself)
+11. The OTHER OPTION could be using another workflow all together, that has to be triggered manually. But then the user will have to 
+12. The THIRD option would be to update the existing workflow to just add a new job to validate there itself. 
 
 
