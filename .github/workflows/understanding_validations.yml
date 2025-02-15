@@ -1,0 +1,58 @@
+name: Deploy Workflow
+run-name: Deploy ${{ inputs.deploy_job }} from ${{ inputs.project }} to ${{ inputs.environment }}
+on:
+  #push:
+  #  branches: 
+  #  - "*"
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: environment
+        default: 'env1'
+        required: true
+        type: choice
+        options:
+          - env1
+          - env2
+          - env3
+          - env4
+      project:
+        description: the project directory containing the job
+        required: true
+      deploy_job:
+        description: job name
+        required : true
+
+permissions:
+  id-token: write
+  pull-requests: write
+  contents: read
+  actions: write
+
+jobs:
+  check_user:
+    runs-on: ubuntu-latest
+    steps:
+      - name : Checkout Repository
+        uses : actions/checkout@v2
+
+      - name: Read USERS file
+        id: read_file
+        run: |
+          echo "USERS=$(jq -c . < USERS.json)" >> $GITHUB_ENV
+
+      - name: Check if user is in list
+        id: check
+        if: ${{ !contains(fromJson(env.USERS), github.actor) }}
+        run: |
+          echo "You have no rights to trigger this job."
+          exit 1
+
+  deploy:
+    needs: check_user
+    uses: streaming/workflows/.github/workflows/deploy.yaml@v1.7.0
+    with: 
+      environment: ${{ inputs.environment }}
+      project: ${{ inputs.project }}
+      deploy_job: ${{ inputs.deploy_job }}
+    secrets: inherit
