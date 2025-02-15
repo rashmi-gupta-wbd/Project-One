@@ -1,5 +1,5 @@
 # defines the name of the workflow
-name: Deploy Workflow
+name: Understand Deploy Workflow
 
 # displayed when the workflow is run. the run-name changes dynamically
 run-name: Deploy ${{ inputs.deploy_job }} from ${{ inputs.project }} to ${{ inputs.environment }}
