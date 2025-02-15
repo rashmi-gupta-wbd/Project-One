@@ -10,6 +10,12 @@ this is bit tricky as setting some values we need form the first workflow, and t
 9. Next we wanted to take separate inputs for the two workflows ❌ this is not possible in github actions simply.
 10. The doc suggests that we can just take the inputs for the second while triggering the first job itself, which we are having some problem with lately... but this could be ONE OF THE IDEAS (to take the inputs of the validations checks at the start itself)
 11. The OTHER OPTION could be using another workflow all together, that has to be triggered manually. 
-12. The THIRD option would be to update the existing workflow to just add a new job to validate there itself. 
+12. The THIRD option would be to update the existing workflow to just add a new job to validate there itself.
 
+13. BLOCKAGE: We needed a bit more understanding of the how the workflows arew ritten so,:
+    a. went through our workflows to understand why the each lines of codes are written.
+    b. got to know about something called the DATABRICKS ASSET BUNDLE
+    c. saw some videos related to DAB, where i got to learn about a way to write the pre defined variables if reused in yml file.
+
+14. Next, we are trying to connect a notebook to the workflow. We have decided for now, to create a workflow separate from the deployment workflow that would not itself be triggered on completion of deployment, for timebeing.
 
