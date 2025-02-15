@@ -8,6 +8,6 @@
 8. The dynamic name in the second workflow should take the imput of its name from the first workflow. 😕 
 this is bit tricky as setting some values we need form the first workflow, and then on usig it as a input for the second workflow, we are getting some error, as it is unable to detect the outputs generated from the first.
 9. Next we wanted to take separate inputs for the two workflows ❌ this is not possible in github actions simply. the doc suggests that we can just take the inputs for thesecond while triggering the first job itself, which we are having some problem with lately... but this could be ONE OF THE IDEAS 
-##to take the inputs of the validations checks at the start itself
+#to take the inputs of the validations checks at the start itself
 
 
