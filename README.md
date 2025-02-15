@@ -9,7 +9,7 @@
 this is bit tricky as setting some values we need form the first workflow, and then on usig it as a input for the second workflow, we are getting some error, as it is unable to detect the outputs generated from the first.
 9. Next we wanted to take separate inputs for the two workflows ❌ this is not possible in github actions simply.
 10. The doc suggests that we can just take the inputs for the second while triggering the first job itself, which we are having some problem with lately... but this could be ONE OF THE IDEAS (to take the inputs of the validations checks at the start itself)
-11. The OTHER OPTION could be using another workflow all together, that has to be triggered manually. But then the user will have to 
+11. The OTHER OPTION could be using another workflow all together, that has to be triggered manually. 
 12. The THIRD option would be to update the existing workflow to just add a new job to validate there itself. 
 
 
