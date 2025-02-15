@@ -1,9 +1,16 @@
+# defines the name of the workflow
 name: Deploy Workflow
+
+# displayed when the workflow is run. the run-name changes dynamically
 run-name: Deploy ${{ inputs.deploy_job }} from ${{ inputs.project }} to ${{ inputs.environment }}
+
+
 on:
   #push:
   #  branches: 
   #  - "*"
+
+  # specifies that the workflow is triggered manually through the GitHub Actions UI
   workflow_dispatch:
     inputs:
       environment:
@@ -22,17 +29,20 @@ on:
       deploy_job:
         description: job name
         required : true
-
+        
+# This section defines the permissions that the workflow requires
 permissions:
-  id-token: write
+  id-token: write #allows workflow to create/request identity tokens to authenticate with external services (eg. cloud providers).
   pull-requests: write
   contents: read
-  actions: write
+  actions: write #Grants the workflow permissions to manage GitHub Actions resources, such as triggering workflows or modifying workflow-related settings.
 
 jobs:
   check_user:
     runs-on: ubuntu-latest
     steps:
+      # Ensures the workflow has access to the repository’s code and files so that it can 
+      # perform operations like reading or modifying files.
       - name : Checkout Repository
         uses : actions/checkout@v2
 
@@ -55,4 +65,4 @@ jobs:
       environment: ${{ inputs.environment }}
       project: ${{ inputs.project }}
       deploy_job: ${{ inputs.deploy_job }}
-    secrets: inherit
+    secrets: inherit #Makes all the secrets set in the repository’s settings available to the workflow, ensuring secure access to sensitive data
