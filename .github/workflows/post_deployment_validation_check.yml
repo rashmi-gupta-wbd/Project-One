@@ -42,27 +42,27 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Fetch outputs from deploy workflow
-        id: fetch_outputs
-        uses: actions/github-script@v6
-        with:
-          script: |
-            const runId = ${{ github.event.workflow_run.id }};
-            const owner = context.repo.owner;
-            const repo = context.repo.repo;
+      # - name: Fetch outputs from deploy workflow
+      #   id: fetch_outputs
+      #   uses: actions/github-script@v6
+      #   with:
+      #     script: |
+      #       const runId = ${{ github.event.workflow_run.id }};
+      #       const owner = context.repo.owner;
+      #       const repo = context.repo.repo;
 
-            const workflowRun = await github.rest.actions.getWorkflowRun({
-              owner,
-              repo,
-              run_id: runId
-            });
+      #       const workflowRun = await github.rest.actions.getWorkflowRun({
+      #         owner,
+      #         repo,
+      #         run_id: runId
+      #       });
 
-            const deployJob = workflowRun.data.outputs.deploy_job;
-            const project = workflowRun.data.outputs.project;
+      #       const deployJob = workflowRun.data.outputs.deploy_job;
+      #       const project = workflowRun.data.outputs.project;
 
-            core.exportVariable('DEPLOY_JOB', deployJob);
-            core.exportVariable('PROJECT', project);
-            return { deployJob, project };
+      #       core.exportVariable('DEPLOY_JOB', deployJob);
+      #       core.exportVariable('PROJECT', project);
+      #       return { deployJob, project };
 
             
       - name: install-databricks-cli
