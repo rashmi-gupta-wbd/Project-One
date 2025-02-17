@@ -62,36 +62,36 @@ jobs:
           echo "::set-output name=deploy_job::${{ inputs.deploy_job }}"
           echo "::set-output name=project::${{ inputs.project }}"
 
-      # Trigger Databricks Notebook execution
-      - name: Trigger Databricks Notebook
-        env:
-          DATABRICKS_TOKEN: ${{ secrets.DATABRICKS_TOKEN }}
-          DATABRICKS_INSTANCE: ${{ secrets.DATABRICKS_INSTANCE }}
-        run: |
-          # Set variables
-          NOTEBOOK_PATH="/Workspace/Path/To/Your/Notebook"  # Adjust the path to your notebook
-          CLUSTER_ID="your-cluster-id"  # Replace with your Databricks cluster ID
+      # # Trigger Databricks Notebook execution
+      # - name: Trigger Databricks Notebook
+      #   env:
+      #     DATABRICKS_TOKEN: ${{ secrets.DATABRICKS_TOKEN }}
+      #     DATABRICKS_INSTANCE: ${{ secrets.DATABRICKS_INSTANCE }}
+      #   run: |
+      #     # Set variables
+      #     NOTEBOOK_PATH="/Workspace/Path/To/Your/Notebook"  # Adjust the path to your notebook
+      #     CLUSTER_ID="your-cluster-id"  # Replace with your Databricks cluster ID
           
-          # Create the JSON payload with required parameters
-          PAYLOAD=$(cat <<EOF
-          {
-            "run_name": "Deploy Job - ${{ inputs.deploy_job }}",
-            "existing_cluster_id": "$CLUSTER_ID",
-            "notebook_task": {
-              "notebook_path": "$NOTEBOOK_PATH",
-              "base_parameters": {
-                "deploy_job": "${{ inputs.deploy_job }}",
-                "project": "${{ inputs.project }}"
-              }
-            }
-          }
-          EOF
-          )
+      #     # Create the JSON payload with required parameters
+      #     PAYLOAD=$(cat <<EOF
+      #     {
+      #       "run_name": "Deploy Job - ${{ inputs.deploy_job }}",
+      #       "existing_cluster_id": "$CLUSTER_ID",
+      #       "notebook_task": {
+      #         "notebook_path": "$NOTEBOOK_PATH",
+      #         "base_parameters": {
+      #           "deploy_job": "${{ inputs.deploy_job }}",
+      #           "project": "${{ inputs.project }}"
+      #         }
+      #       }
+      #     }
+      #     EOF
+      #     )
 
-          # Trigger the Databricks notebook using the REST API
-          curl -X POST \
-            https://$DATABRICKS_INSTANCE/api/2.1/jobs/runs/submit \
-            -H "Authorization: Bearer $DATABRICKS_TOKEN" \
-            -H "Content-Type: application/json" \
-            -d "$PAYLOAD"
+      #     # Trigger the Databricks notebook using the REST API
+      #     curl -X POST \
+      #       https://$DATABRICKS_INSTANCE/api/2.1/jobs/runs/submit \
+      #       -H "Authorization: Bearer $DATABRICKS_TOKEN" \
+      #       -H "Content-Type: application/json" \
+      #       -d "$PAYLOAD"
 
