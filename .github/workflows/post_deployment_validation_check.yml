@@ -6,7 +6,7 @@ on:
   workflow_run:
     workflows: ["Deploy workflow"]
     types:
-      - completed
+      - successful 
 
   # Adding `workflow_dispatch` to allow manual inputs again
   workflow_dispatch:
